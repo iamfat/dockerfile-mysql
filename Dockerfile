@@ -1,22 +1,9 @@
 FROM ubuntu:14.04
 MAINTAINER maintain@geneegroup.com
 
-# Use faster APT mirror
-ADD sources.list /etc/apt/sources.list
-
 # Install Basic Packages
-RUN apt-get update && apt-get install -y language-pack-en
-
-# Install Supervisor
-RUN apt-get install -y supervisor && \
+RUN apt-get update && apt-get install -y supervisor && \
     sed -i 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
-
-# Install SSH Server
-ENV GENEE_PASSWORD 83719730
-RUN apt-get install -y openssh-server && \
-    mkdir /var/run/sshd && groupadd -f admin && \
-    useradd -g admin -m -s /bin/bash -p $(perl -e 'print crypt("'$GENEE_PASSWORD'", "GENEE")') genee
-ADD supervisor.ssh.conf /etc/supervisor/conf.d/ssh.conf
 
 # Install MySQL Server
 ENV MYSQL_PASSWORD 83719730
@@ -32,10 +19,9 @@ RUN /usr/sbin/mysqld --skip-networking & \
 ADD supervisor.mysql.conf /etc/supervisor/conf.d/mysql.conf
 
 # We have to use separate volume for mysql data since it might be really big
-VOLUME ["/data", "/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
+VOLUME ["/data", "/var/log/supervisor", "/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
 
 EXPOSE 3306
-EXPOSE 22
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
