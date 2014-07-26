@@ -3,7 +3,8 @@ MAINTAINER maintain@geneegroup.com
 
 # Install Basic Packages
 RUN apt-get update && apt-get install -y supervisor && \
-    sed -i 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
+    sed -i 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf && \
+    sed -i 's/^logfile=.*$/logfile=\/dev\/null/' /etc/supervisor/supervisord.conf
 
 # Install MySQL Server
 ENV MYSQL_PASSWORD 83719730
