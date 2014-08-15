@@ -1,6 +1,8 @@
 FROM ubuntu:14.04
 MAINTAINER maintain@geneegroup.com
 
+ENV DEBIAN_FRONTEND noninteractive
+
 ENV MYSQL_PASSWORD 83719730
 RUN apt-get update && \
   echo "mysql-server mysql-server/root_password password $MYSQL_PASSWORD" | debconf-set-selections && \
