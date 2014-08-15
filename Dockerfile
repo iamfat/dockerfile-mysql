@@ -9,6 +9,7 @@ RUN apt-get update && \
 	echo "mysql-server mysql-server/root_password_again password $MYSQL_PASSWORD" | debconf-set-selections && \
 	apt-get install -y mysql-server && \
 	sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf && \
+	sed -i 's/^myisam-recover\s*=/myisam-recover-options =/' /etc/mysql/my.cnf && \
 	sed -i 's/^log_error\s*=/#log_error =/' /etc/mysql/my.cnf && \
 	sed -i 's/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/' /etc/mysql/my.cnf
 RUN /usr/sbin/mysqld --skip-networking & \
