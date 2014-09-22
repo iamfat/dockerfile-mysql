@@ -16,6 +16,8 @@ RUN /usr/sbin/mysqld --skip-networking & \
     sleep 3s && \
     echo "GRANT ALL ON *.* TO genee@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION; FLUSH PRIVILEGES" \
     | mysql -u root -p$MYSQL_PASSWORD
+RUN mkdir -p /etc/mysql/conf.d
+ADD 50-disable-name-resolving.cnf /etc/mysql/conf.d/50-disable-name-resolving.cnf
 
 # We have to use separate volume for mysql data since it might be really big
 # VOLUME ["/data", "/etc/mysql", "/var/lib/mysql", "/var/log/mysql"]
