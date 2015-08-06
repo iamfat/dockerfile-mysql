@@ -5,4 +5,4 @@ chown -R mysql:mysql /var/lib/mysql
 chmod 0700 /var/lib/mysql
 chmod 2750 /var/log/mysql
 
-/usr/bin/mysqld_safe
+exec /usr/bin/mysqld_safe
